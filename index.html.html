@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Gestão · Loja da Aldrei</title>
+<style>
+:root{--bg:#fdf8f5;--card:#fff;--tx:#2b2024;--mu:#7a6a70;--ac:#b83a6b;--ac2:#f6dfe8;--bd:#ecd9e0;--ok:#1f8a4c;--er:#c0392b;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1b1317;--card:#271c22;--tx:#f5eaee;--mu:#b9a4ac;--ac:#e0709a;--ac2:#3b2430;--bd:#43303a;--ok:#4cc27f;--er:#ef7b6e}}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;margin:0}
+body{background:var(--bg);color:var(--tx);font-family:system-ui,-apple-system,"Segoe UI",sans-serif;display:flex;flex-direction:column;font-size:16px}
+header{padding:14px 16px 10px;border-bottom:1px solid var(--bd);display:flex;justify-content:space-between;align-items:center}
+header b{font-family:Georgia,serif;font-size:1.15rem;color:var(--ac)}
+header span{font-size:.8rem;color:var(--mu)}
+main{flex:1;overflow-y:auto;padding:14px 14px 96px}
+nav{position:fixed;left:0;right:0;bottom:0;display:flex;background:var(--card);border-top:1px solid var(--bd);padding-bottom:env(safe-area-inset-bottom,0px);z-index:5}
+nav button{flex:1;background:none;border:0;color:var(--mu);padding:10px 0 8px;font-size:.72rem;min-height:56px}
+nav button i{display:block;font-style:normal;font-size:1.4rem;line-height:1.2}
+nav button.on{color:var(--ac);font-weight:700}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:14px;margin-bottom:10px}
+.row{display:flex;align-items:center;gap:10px}.sp{justify-content:space-between}
+.mu{color:var(--mu);font-size:.88rem}
+.time{font-weight:700;font-size:1.1rem;min-width:56px;color:var(--ac)}
+.tag{font-size:.75rem;padding:3px 9px;border-radius:99px;background:var(--ac2);color:var(--ac);font-weight:600}
+.tag.done{background:rgba(31,138,76,.15);color:var(--ok)}.tag.canc{background:rgba(192,57,43,.15);color:var(--er)}
+.btn{background:var(--ac);color:#fff;border:0;border-radius:12px;padding:0 18px;min-height:46px;font-size:1rem;font-weight:600}
+.btn.sm{min-height:38px;padding:0 12px;font-size:.88rem}
+.btn.g{background:var(--ac2);color:var(--ac)}.btn.ok{background:var(--ok)}.btn.er{background:transparent;color:var(--er);border:1px solid var(--er)}
+.fab{position:fixed;right:16px;bottom:calc(72px + env(safe-area-inset-bottom,0px));width:58px;height:58px;border-radius:50%;background:var(--ac);color:#fff;border:0;font-size:2rem;box-shadow:0 4px 14px rgba(0,0,0,.3);z-index:6}
+input,select{width:100%;min-height:46px;padding:0 12px;border:1px solid var(--bd);border-radius:12px;background:var(--bg);color:var(--tx);font-size:1rem;margin-bottom:10px}
+label{font-size:.85rem;font-weight:600;display:block;margin-bottom:4px}
+.days{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;gap:8px}
+.days button{width:46px;height:46px;border-radius:12px;border:1px solid var(--bd);background:var(--card);color:var(--tx);font-size:1.2rem}
+.days div{text-align:center;flex:1}.days b{display:block;text-transform:capitalize}
+.sheet{position:fixed;inset:0;background:rgba(0,0,0,.5);display:none;align-items:flex-end;z-index:20}
+.sheet.show{display:flex}
+.sheet>div{background:var(--bg);width:100%;max-height:90%;overflow-y:auto;border-radius:20px 20px 0 0;padding:18px 16px calc(18px + env(safe-area-inset-bottom,0px))}
+.sheet h3{margin:0 0 14px}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
+.stats .card{margin:0;text-align:center}.stats b{display:block;font-size:1.3rem;color:var(--ac)}
+.empty{text-align:center;color:var(--mu);padding:36px 10px}
+h4{margin:18px 0 8px}
+#lock{position:fixed;inset:0;z-index:50;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;gap:6px}
+#lock>*{max-width:340px;width:100%}#lock>svg{width:200px}#lock h2{margin:6px 0 10px;text-align:center}#lock .mu{text-align:center;min-height:1.2em;color:var(--er)}</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#e0407f"/><stop offset=".55" stop-color="#b0206a"/><stop offset="1" stop-color="#6d1450"/></linearGradient><linearGradient id="gold" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffe9a8"/><stop offset=".5" stop-color="#f5b942"/><stop offset="1" stop-color="#d98a1c"/></linearGradient><linearGradient id="steel" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#f3dfe8"/></linearGradient><filter id="sh" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="6" stdDeviation="7" flood-color="#2a0420" flood-opacity=".45"/></filter><path id="star" d="M0-1 C.12-.3 .3-.12 1 0 C.3.12 .12.3 0 1 C-.12.3 -.3.12 -1 0 C-.3-.12 -.12-.3 0-1Z"/><g id="emblem"><circle cx="300" cy="250" r="214" fill="url(#gold)"/><circle cx="300" cy="250" r="200" fill="url(#bg)" filter="url(#sh)"/><circle cx="300" cy="250" r="184" fill="none" stroke="#ffe9a8" stroke-opacity=".55" stroke-width="2" stroke-dasharray="2 9" stroke-linecap="round"/><g fill="none" stroke="url(#gold)" stroke-linecap="round"><path d="M150 330 C200 250 250 400 300 320 S400 250 450 320" stroke-width="10" opacity=".95"/><path d="M160 360 C210 290 255 425 305 350 S395 290 440 355" stroke-width="5" opacity=".6"/></g><g filter="url(#sh)" stroke-linecap="round" stroke-linejoin="round"><path d="M262 322 L345 128" stroke="url(#steel)" stroke-width="20" fill="none"/><path d="M338 322 L255 128" stroke="url(#steel)" stroke-width="20" fill="none"/><circle cx="248" cy="352" r="32" fill="none" stroke="url(#steel)" stroke-width="14"/><circle cx="352" cy="352" r="32" fill="none" stroke="url(#steel)" stroke-width="14"/><circle cx="300" cy="235" r="11" fill="url(#gold)" stroke="#8a5a10" stroke-width="2"/></g><g fill="#fff4cf"><use href="#star" transform="translate(430 150) scale(26)"/><use href="#star" transform="translate(462 205) scale(13)"/><use href="#star" transform="translate(160 175) scale(18)"/><use href="#star" transform="translate(410 400) scale(11)" opacity=".8"/></g></g></defs></svg>
+<div id="lock"><svg viewBox="0 0 600 620" role="img" aria-label="Logo Loja da Aldrei"><use href="#emblem"/><text x="300" y="515" text-anchor="middle" font-family="Georgia,serif" font-size="70" font-weight="700" fill="#b0206a" letter-spacing="1">Loja</text><text x="300" y="571" text-anchor="middle" font-family="Georgia,serif" font-size="38" font-weight="700" fill="#d98a1c" letter-spacing="10">DA ALDREI</text><text x="300" y="605" text-anchor="middle" font-family="system-ui,Arial,sans-serif" font-size="17" fill="#8a6a78" letter-spacing="6">BELEZA &amp; ESTILO</text></svg><h2 id="lt">Entrar</h2><input id="lp" type="password" placeholder="Senha" autocomplete="current-password"><input id="lp2" type="password" placeholder="Repita a senha" style="display:none" autocomplete="new-password"><button class="btn" id="lb">Entrar</button><p class="mu" id="lm"></p></div>
+<header><b style="display:flex;align-items:center;gap:8px"><svg width="30" height="30" viewBox="80 30 440 440" aria-hidden="true"><use href="#emblem"/></svg>Loja da Aldrei</b><span id="sync"></span></header>
+<main id="main"></main>
+<button class="fab" id="fab" aria-label="Novo">+</button>
+<nav id="nav"></nav>
+<div class="sheet" id="sheet"><div id="sbody"></div></div>
+
+<script>
+var $=function(i){return document.getElementById(i)};
+var S={clients:[],services:[],appts:[]},tab="agenda",day=new Date(),q="",db=null,ref=null,loaded=false;
+var DEF=[["Corte feminino",80,60],["Corte masculino",45,40],["Escova",50,45],["Coloração",150,120],["Hidratação",90,60],["Barba",30,30]];
+function uid(){return Math.random().toString(36).slice(2,9)}
+function pad(n){return String(n).padStart(2,"0")}
+function iso(d){return d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate())}
+function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})}
+function brl(v){return "R$ "+Number(v||0).toFixed(2).replace(".",",")}
+function cl(id){return S.clients.filter(function(c){return c.id===id})[0]}
+function sv(id){return S.services.filter(function(c){return c.id===id})[0]}
+function defaults(){S.services=DEF.map(function(d){return {id:uid(),name:d[0],price:d[1],dur:d[2]}})}
+
+// ---- persistência ----
+var timer;
+function save(){
+  try{localStorage.setItem("audrei_gestao",JSON.stringify(S))}catch(e){}
+  clearTimeout(timer);
+  timer=setTimeout(async function(){
+    if(!ref)return;
+    try{await ref.set({data:JSON.stringify(S)});$("sync").textContent="☁ salvo"}catch(e){$("sync").textContent="⚠ só neste aparelho"}
+  },500);
+}
+async function load(){
+  var fin=function(){if(loaded)return;loaded=true;if(!S.services.length)defaults();render();gate()};
+  try{var l=JSON.parse(localStorage.getItem("audrei_gestao")||"null");if(l)S=l}catch(e){}
+  var t=setTimeout(fin,6000);
+  try{
+    if(window.claude&&claude.use){
+      db=await claude.use("db");
+      if(db){
+        ref=db.doc("app/data");
+        var s=await ref.get();
+        if(s.exists){try{S=JSON.parse(s.data().data)}catch(e){}}
+        $("sync").textContent="☁ sincronizado";
+      }else $("sync").textContent="só neste aparelho";
+    }
+  }catch(e){$("sync").textContent="só neste aparelho"}
+  clearTimeout(t);fin();
+}
+
+// ---- navegação ----
+var TABS=[["agenda","📅","Agenda"],["clientes","👥","Clientes"],["servicos","✂️","Serviços"],["fin","💰","Financeiro"]];
+function nav(){$("nav").innerHTML=TABS.map(function(t){return '<button class="'+(tab===t[0]?'on':'')+'" data-t="'+t[0]+'"><i>'+t[1]+'</i>'+t[2]+'</button>'}).join("");$("fab").style.display=(tab==="fin")?"none":"block"}
+$("nav").onclick=function(e){var b=e.target.closest("button");if(b){tab=b.dataset.t;q="";render()}};
+$("fab").onclick=function(){tab==="agenda"?formAppt():tab==="clientes"?formClient():formService()};
+
+function render(){nav();var m=$("main");({agenda:vAgenda,clientes:vClientes,servicos:vServicos,fin:vFin})[tab](m);}
+
+// ---- agenda ----
+function vAgenda(m){
+  var ds=iso(day),L=S.appts.filter(function(a){return a.date===ds}).sort(function(a,b){return a.time<b.time?-1:1});
+  var nome=day.toLocaleDateString("pt-BR",{weekday:"long",day:"2-digit",month:"long"});
+  var h='<div class="days"><button data-d="-1">‹</button><div><b>'+nome+'</b><span class="mu">'+(ds===iso(new Date())?"Hoje · ":"")+L.length+' agendamento(s)</span></div><button data-d="1">›</button></div>';
+  if(!L.length)h+='<div class="empty">Nenhum agendamento neste dia.<br>Toque no + para criar.</div>';
+  L.forEach(function(a){
+    var c=cl(a.clientId),s=sv(a.serviceId);
+    h+='<div class="card" data-a="'+a.id+'"><div class="row"><div class="time">'+esc(a.time)+'</div><div style="flex:1"><b>'+esc(c?c.name:"Cliente removido")+'</b><div class="mu">'+esc(s?s.name:"—")+' · '+brl(a.price)+'</div></div><span class="tag '+(a.status==="done"?"done":a.status==="canc"?"canc":"")+'">'+(a.status==="done"?"Concluído":a.status==="canc"?"Cancelado":"Agendado")+'</span></div>';
+    if(a.status==="ag")h+='<div class="row" style="margin-top:10px"><button class="btn sm ok" data-act="done">✓ Concluir</button><button class="btn sm g" data-act="canc">Cancelar</button>'+(c&&c.phone?'<a class="btn sm g" style="display:flex;align-items:center;text-decoration:none" target="_blank" rel="noopener" href="https://wa.me/55'+c.phone.replace(/\D/g,"")+'">WhatsApp</a>':'')+'</div>';
+    else h+='<div class="row" style="margin-top:10px"><button class="btn sm er" data-act="del">Excluir</button></div>';
+    h+='</div>';
+  });
+  m.innerHTML=h;
+}
+$("main").onclick=function(e){
+  var d=e.target.closest("[data-d]");if(d){day=new Date(day.getFullYear(),day.getMonth(),day.getDate()+Number(d.dataset.d));render();return}
+  var act=e.target.closest("[data-act]");
+  if(act){var card=act.closest("[data-a]"),a=S.appts.filter(function(x){return x.id===card.dataset.a})[0];if(!a)return;
+    if(act.dataset.act==="del"){S.appts=S.appts.filter(function(x){return x!==a})}else a.status=act.dataset.act;save();render();return}
+  var ed=e.target.closest("[data-edit]");if(ed){var t=ed.dataset.edit.split(":");t[0]==="c"?formClient(t[1]):formService(t[1])}
+};
+
+// ---- clientes ----
+function vClientes(m){
+  var L=S.clients.filter(function(c){return (c.name+c.phone).toLowerCase().indexOf(q.toLowerCase())>-1}).sort(function(a,b){return a.name.localeCompare(b.name)});
+  var h='<input id="busca" placeholder="🔍 Buscar cliente" value="'+esc(q)+'">';
+  if(!L.length)h+='<div class="empty">Nenhum cliente. Toque no + para cadastrar.</div>';
+  L.forEach(function(c){
+    var n=S.appts.filter(function(a){return a.clientId===c.id&&a.status==="done"}).length;
+    h+='<div class="card row sp" data-edit="c:'+c.id+'"><div><b>'+esc(c.name)+'</b><div class="mu">'+esc(c.phone||"sem telefone")+' · '+n+' visita(s)</div></div><span class="mu">✎</span></div>';
+  });
+  m.innerHTML=h;var b=$("busca");b.oninput=function(){q=b.value;var p=b.selectionStart;render();var nb=$("busca");nb.focus();nb.setSelectionRange(p,p)};
+}
+// ---- serviços ----
+function vServicos(m){
+  var h="";
+  if(!S.services.length)h='<div class="empty">Nenhum serviço cadastrado.</div>';
+  S.services.forEach(function(s){h+='<div class="card row sp" data-edit="s:'+s.id+'"><div><b>'+esc(s.name)+'</b><div class="mu">'+s.dur+' min</div></div><b style="color:var(--ac)">'+brl(s.price)+'</b></div>'});
+  m.innerHTML=h;
+}
+// ---- financeiro ----
+function vFin(m){
+  var now=new Date(),ds=iso(now),wk=iso(new Date(now.getFullYear(),now.getMonth(),now.getDate()-6)),mo=now.getFullYear()+"-"+pad(now.getMonth()+1);
+  var D=S.appts.filter(function(a){return a.status==="done"});
+  var sum=function(f){return D.filter(f).reduce(function(t,a){return t+Number(a.price||0)},0)};
+  var cnt=D.filter(function(a){return a.date.slice(0,7)===mo}).length,tot=sum(function(a){return a.date.slice(0,7)===mo});
+  var h='<div class="stats"><div class="card"><span class="mu">Hoje</span><b>'+brl(sum(function(a){return a.date===ds}))+'</b></div><div class="card"><span class="mu">Últimos 7 dias</span><b>'+brl(sum(function(a){return a.date>=wk&&a.date<=ds}))+'</b></div><div class="card"><span class="mu">Este mês</span><b>'+brl(tot)+'</b></div><div class="card"><span class="mu">Ticket médio</span><b>'+brl(cnt?tot/cnt:0)+'</b></div></div><h4>Atendimentos concluídos</h4>';
+  var L=D.sort(function(a,b){return (b.date+b.time)<(a.date+a.time)?-1:1}).slice(0,30);
+  if(!L.length)h+='<div class="empty">Conclua um agendamento na Agenda para ele aparecer aqui.</div>';
+  L.forEach(function(a){var c=cl(a.clientId),s=sv(a.serviceId);h+='<div class="card row sp"><div><b>'+esc(c?c.name:"—")+'</b><div class="mu">'+esc(s?s.name:"—")+' · '+a.date.split("-").reverse().join("/")+' '+a.time+'</div></div><b style="color:var(--ok)">'+brl(a.price)+'</b></div>'});
+  m.innerHTML=h;
+}
+
+// ---- formulários ----
+function open(html){$("sbody").innerHTML=html;$("sheet").classList.add("show")}
+function close(){$("sheet").classList.remove("show")}
+$("sheet").onclick=function(e){if(e.target===$("sheet"))close()};
+function formAppt(){
+  if(!S.clients.length){open('<h3>Novo agendamento</h3><p class="mu">Cadastre um cliente primeiro.</p><button class="btn" id="x" style="width:100%">Cadastrar cliente</button>');$("x").onclick=function(){formClient()};return}
+  var co=S.clients.map(function(c){return '<option value="'+c.id+'">'+esc(c.name)+'</option>'}).join(""),so=S.services.map(function(s){return '<option value="'+s.id+'">'+esc(s.name)+' – '+brl(s.price)+'</option>'}).join("");
+  open('<h3>Novo agendamento</h3><label>Cliente</label><select id="fc">'+co+'</select><label>Serviço</label><select id="fs">'+so+'</select><label>Data</label><input type="date" id="fd" value="'+iso(day)+'"><label>Hora</label><input type="time" id="ft" value="09:00"><label>Valor (R$)</label><input type="number" id="fp" inputmode="decimal" step="0.01"><button class="btn" id="ok" style="width:100%">Salvar</button>');
+  var fp=function(){var s=sv($("fs").value);$("fp").value=s?s.price:""};fp();$("fs").onchange=fp;
+  $("ok").onclick=function(){if(!$("fd").value||!$("ft").value)return;
+    var dup=S.appts.some(function(a){return a.date===$("fd").value&&a.time===$("ft").value&&a.status==="ag"});
+    if(dup&&!confirm("Já existe um agendamento neste horário. Salvar mesmo assim?"))return;
+    S.appts.push({id:uid(),date:$("fd").value,time:$("ft").value,clientId:$("fc").value,serviceId:$("fs").value,price:Number($("fp").value)||0,status:"ag"});
+    var p=$("fd").value.split("-");day=new Date(p[0],p[1]-1,p[2]);save();close();render()};
+}
+function formClient(id){
+  var c=id?cl(id):{name:"",phone:""};
+  open('<h3>'+(id?"Editar":"Novo")+' cliente</h3><label>Nome</label><input id="cn" value="'+esc(c.name)+'"><label>Telefone / WhatsApp</label><input id="cp" inputmode="tel" value="'+esc(c.phone)+'" placeholder="(11) 90000-0000"><button class="btn" id="ok" style="width:100%">Salvar</button>'+(id?'<button class="btn er" id="del" style="width:100%;margin-top:10px">Excluir cliente</button>':''));
+  $("ok").onclick=function(){var n=$("cn").value.trim();if(!n)return;if(id){c.name=n;c.phone=$("cp").value.trim()}else S.clients.push({id:uid(),name:n,phone:$("cp").value.trim()});save();close();render()};
+  if(id)$("del").onclick=function(){if(confirm("Excluir este cliente?")){S.clients=S.clients.filter(function(x){return x.id!==id});save();close();render()}};
+}
+function formService(id){
+  var s=id?sv(id):{name:"",price:"",dur:60};
+  open('<h3>'+(id?"Editar":"Novo")+' serviço</h3><label>Nome</label><input id="sn" value="'+esc(s.name)+'"><label>Preço (R$)</label><input id="sp" type="number" inputmode="decimal" step="0.01" value="'+s.price+'"><label>Duração (min)</label><input id="sd" type="number" inputmode="numeric" value="'+s.dur+'"><button class="btn" id="ok" style="width:100%">Salvar</button>'+(id?'<button class="btn er" id="del" style="width:100%;margin-top:10px">Excluir serviço</button>':''));
+  $("ok").onclick=function(){var n=$("sn").value.trim();if(!n)return;var o={name:n,price:Number($("sp").value)||0,dur:Number($("sd").value)||30};if(id)Object.assign(s,o);else S.services.push(Object.assign({id:uid()},o));save();close();render()};
+  if(id)$("del").onclick=function(){if(confirm("Excluir este serviço?")){S.services=S.services.filter(function(x){return x.id!==id});save();close();render()}};
+}
+async function hsh(s){try{var b=await crypto.subtle.digest("SHA-256",new TextEncoder().encode("aldrei:"+s));return Array.from(new Uint8Array(b)).map(function(x){return x.toString(16).padStart(2,"0")}).join("")}catch(e){return btoa(unescape(encodeURIComponent("aldrei:"+s)))}}
+function gate(){
+  var first=!S.pin;
+  $("lt").textContent=first?"Criar senha de acesso":"Entrar";
+  $("lb").textContent=first?"Criar senha e entrar":"Entrar";
+  $("lp2").style.display=first?"block":"none";
+  var go=async function(){
+    var v=$("lp").value,m=$("lm");
+    if(first){
+      if(v.length<4){m.textContent="Use pelo menos 4 caracteres.";return}
+      if(v!==$("lp2").value){m.textContent="As senhas não conferem.";return}
+      S.pin=await hsh(v);save();$("lock").style.display="none";
+    }else{
+      if((await hsh(v))===S.pin){$("lock").style.display="none";$("lp").value=""}else m.textContent="Senha incorreta.";
+    }
+  };
+  $("lb").onclick=go;
+  $("lp").onkeydown=$("lp2").onkeydown=function(e){if(e.key==="Enter")go()};
+}
+load();
+</script>
+</body>
+</html>
